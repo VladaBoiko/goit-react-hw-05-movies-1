@@ -1,0 +1,11 @@
+.list {
+    list-style: none;
+}
+
+.item {
+    margin-bottom: 80px;
+}
+
+.img {
+    width: 150px;
+}
