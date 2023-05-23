@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import propTypes from 'prop-types'; 
 import { Link, useLocation } from 'react-router-dom';
 import API from 'fetch/fetch';
 import { ToastContainer, toast } from 'react-toastify';
@@ -6,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Spinner from 'utils/Spinner/Spinner';
 import s from './listMovies.module.css'
 
-export default function ListMovies({search}) {
+export default function ListMovies({ search }) {
     const [movies, setMovies] = useState();
     const [spinner, setSpinner] = useState(false);
     const location = useLocation();
@@ -49,3 +50,7 @@ export default function ListMovies({search}) {
         </>
     );
 }
+
+ListMovies.propTypes = {
+  search: propTypes.string,
+};

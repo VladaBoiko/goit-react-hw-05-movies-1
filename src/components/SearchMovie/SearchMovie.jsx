@@ -1,9 +1,10 @@
 import { useState } from 'react';
+import propTypes from 'prop-types';
 import Button from 'utils/Button/Button';
 import s from './searchMovie.module.css'
 import { toast } from 'react-toastify';
 
-export default function SearchMovie({forSearch, search}) {
+export default function SearchMovie({ forSearch, search }) {
     const [input, setInput] = useState('');
     
     const handleFromSubmit = e => {
@@ -34,3 +35,8 @@ export default function SearchMovie({forSearch, search}) {
         </>
     )
 }
+
+SearchMovie.propTypes = {
+    forSearch: propTypes.func,
+    search: propTypes.string
+};
