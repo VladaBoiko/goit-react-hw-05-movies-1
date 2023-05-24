@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, Link,  Outlet, useLocation, useNavigate} from 'react-router-dom';
 import API from 'fetch/fetch';
 import MovieHeading from 'components/MovieHeading/MovieHeading';
@@ -6,17 +6,21 @@ import s from "./movieDetails.module.css"
 import Spinner from 'utils/Spinner/Spinner';
 import Button from 'utils/Button/Button';
 
+const defaultImg = 'https://ireland.apollo.olxcdn.com/v1/files/0iq0gb9ppip8-UA/image;s=1000x700';
+
 export default function MovieDetails() {
   const [movies, setMovies] = useState();
   const moviesId = useParams();
   const location = useLocation();
   const navigate = useNavigate();
+  const backToPrevLinkRef = useRef(location.state?.from ?? '/movies')
 
     useEffect(() => {
         API.fetchMoviesDetails(moviesId).then(response => setMovies(response))
     }, [moviesId])
 
-    const Return = () => {
+  const Return = () => {
+      console.log(location)
       navigate(
         location.state?.from?.pathname
           ? `${location.state?.from?.pathname}${location.state?.from?.search}`
@@ -32,7 +36,13 @@ export default function MovieDetails() {
         <MovieHeading text={movies.title}/>
         <Button type={'button'} children={location?.state?.label ?? 'Return'} onClick={Return}/>
         <div className={s.container}>
-        <img src={`https://image.tmdb.org/t/p/w342${movies.poster_path}`} alt={movies.title} />
+              <img src={ movies.poster_path ?
+                `https://image.tmdb.org/t/p/w342${movies.poster_path}`
+                : defaultImg
+              }
+                alt={movies.title}
+                width={250}
+              />
         <div className={s.description}>
               <h2>{movies.title}</h2>
               <p>Release date: {movies.release_date}</p>
@@ -50,7 +60,7 @@ export default function MovieDetails() {
                 <Link
                   to={`/movies/${moviesId.moviesId}/cast`}
                   state={{
-                    from: location
+                    from: backToPrevLinkRef.current
                   }}
                 >
                   Cast
@@ -62,7 +72,7 @@ export default function MovieDetails() {
                 <Link
                   to={`/movies/${moviesId.moviesId}/reviews `}
                   state={{
-                    from: location
+                    from: backToPrevLinkRef.current
                   }}
                 >
                   Reviews
