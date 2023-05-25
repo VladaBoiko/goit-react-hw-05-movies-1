@@ -17,12 +17,16 @@ const defaultImg =
 
 export default function MovieDetails() {
   const [movies, setMovies] = useState();
-  const { moviesId } = useParams();
+  const moviesId = useParams();
   const location = useLocation();
   const navigate = useNavigate();
   const backToPrevLinkRef = useRef(location.state?.from ?? "/movies");
-  console.log(moviesId);
+  // console.log(moviesId);
   useEffect(() => {
+    if (!moviesId) {
+      console.log("there is no", moviesId);
+      return;
+    }
     console.log(moviesId);
     API.fetchMoviesDetails(moviesId).then((response) => setMovies(response));
   }, [moviesId]);

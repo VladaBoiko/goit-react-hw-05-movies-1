@@ -12,7 +12,7 @@ const fetchTrendingMovies = async () => {
 const fetchMoviesDetails = async (movieId) => {
   //   console.log(typeof movieId.moviesId);
   const response = await axios.get(
-    `/movie/${movieId}?api_key=${KEY}&language=en-US`
+    `/movie/${movieId.moviesId}?api_key=${KEY}&language=en-US`
   );
   return response.data;
 };
