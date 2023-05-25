@@ -15,12 +15,12 @@ export default function MovieDetails() {
   const navigate = useNavigate();
   const backToPrevLinkRef = useRef(location.state?.from ?? '/movies')
 
-    useEffect(() => {
-        API.fetchMoviesDetails(moviesId).then(response => setMovies(response))
-    }, [moviesId])
+  useEffect(() => {
+    API.fetchMoviesDetails(moviesId).then(response => setMovies(response))
+        
+  }, [moviesId]);
 
   const Return = () => {
-      console.log(location)
       navigate(
         location.state?.from?.pathname
           ? `${location.state?.from?.pathname}${location.state?.from?.search}`
@@ -28,22 +28,22 @@ export default function MovieDetails() {
       );
     };
 
-    return (
+  return (
+    <>
+      {!movies && <Spinner timeout={3000} />}
+      {movies && (
         <>
-        {!movies && <Spinner timeout={3000}/>}
-        {movies &&(
-        <>
-        <MovieHeading text={movies.title}/>
-        <Button type={'button'} children={location?.state?.label ?? 'Return'} onClick={Return}/>
-        <div className={s.container}>
-              <img src={ movies.poster_path ?
-                `https://image.tmdb.org/t/p/w342${movies.poster_path}`
-                : defaultImg
-              }
-                alt={movies.title}
-                width={250}
-              />
-        <div className={s.description}>
+          <MovieHeading text={movies.title} />
+          <Button type={'button'} children={location?.state?.label ?? 'Return'} onClick={Return} />
+          <div className={s.container}>
+            <img src={movies.poster_path ?
+              `https://image.tmdb.org/t/p/w342${movies.poster_path}`
+              : defaultImg
+            }
+              alt={movies.title}
+              width={250}
+            />
+            <div className={s.description}>
               <h2>{movies.title}</h2>
               <p>Release date: {movies.release_date}</p>
               <p>User Score: {movies.vote_average * 10}%</p>
@@ -51,9 +51,9 @@ export default function MovieDetails() {
               <p>{movies.overview}</p>
               <h4>Genres</h4>
               <p>{movies.genres.map(genre => genre.name + ' ')}</p>
-        </div>
-        </div>
-        <div className={s.more}>
+            </div>
+          </div>
+          <div className={s.more}>
             <h2>Additional information</h2>
             <ul className={s.list}>
               <li>
@@ -79,10 +79,10 @@ export default function MovieDetails() {
                 </Link>
               </li>
             </ul>
-            <Outlet/>
+            <Outlet />
           </div>
         </>
-        )}
-        </>
-    )
+      )}
+    </>
+  );
 }
