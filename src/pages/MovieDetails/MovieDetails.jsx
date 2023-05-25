@@ -1,32 +1,39 @@
-import { useState, useEffect, useRef } from 'react';
-import { useParams, Link,  Outlet, useLocation, useNavigate} from 'react-router-dom';
-import API from 'fetch/fetch';
-import MovieHeading from 'components/MovieHeading/MovieHeading';
-import s from "./movieDetails.module.css"
-import Spinner from 'utils/Spinner/Spinner';
-import Button from 'utils/Button/Button';
+import { useState, useEffect, useRef } from "react";
+import {
+  useParams,
+  Link,
+  Outlet,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
+import API from "fetch/fetch";
+import MovieHeading from "components/MovieHeading/MovieHeading";
+import s from "./movieDetails.module.css";
+import Spinner from "utils/Spinner/Spinner";
+import Button from "utils/Button/Button";
 
-const defaultImg = 'https://ireland.apollo.olxcdn.com/v1/files/0iq0gb9ppip8-UA/image;s=1000x700';
+const defaultImg =
+  "https://ireland.apollo.olxcdn.com/v1/files/0iq0gb9ppip8-UA/image;s=1000x700";
 
 export default function MovieDetails() {
   const [movies, setMovies] = useState();
-  const moviesId = useParams();
+  const { moviesId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-  const backToPrevLinkRef = useRef(location.state?.from ?? '/movies')
-
+  const backToPrevLinkRef = useRef(location.state?.from ?? "/movies");
+  console.log(moviesId);
   useEffect(() => {
-    API.fetchMoviesDetails(moviesId).then(response => setMovies(response))
-        
+    console.log(moviesId);
+    API.fetchMoviesDetails(moviesId).then((response) => setMovies(response));
   }, [moviesId]);
 
   const Return = () => {
-      navigate(
-        location.state?.from?.pathname
-          ? `${location.state?.from?.pathname}${location.state?.from?.search}`
-          : '/',
-      );
-    };
+    navigate(
+      location.state?.from?.pathname
+        ? `${location.state?.from?.pathname}${location.state?.from?.search}`
+        : "/"
+    );
+  };
 
   return (
     <>
@@ -34,12 +41,18 @@ export default function MovieDetails() {
       {movies && (
         <>
           <MovieHeading text={movies.title} />
-          <Button type={'button'} children={location?.state?.label ?? 'Return'} onClick={Return} />
+          <Button
+            type={"button"}
+            children={location?.state?.label ?? "Return"}
+            onClick={Return}
+          />
           <div className={s.container}>
-            <img src={movies.poster_path ?
-              `https://image.tmdb.org/t/p/w342${movies.poster_path}`
-              : defaultImg
-            }
+            <img
+              src={
+                movies.poster_path
+                  ? `https://image.tmdb.org/t/p/w342${movies.poster_path}`
+                  : defaultImg
+              }
               alt={movies.title}
               width={250}
             />
@@ -50,7 +63,7 @@ export default function MovieDetails() {
               <h3>Overview</h3>
               <p>{movies.overview}</p>
               <h4>Genres</h4>
-              <p>{movies.genres.map(genre => genre.name + ' ')}</p>
+              <p>{movies.genres.map((genre) => genre.name + " ")}</p>
             </div>
           </div>
           <div className={s.more}>
@@ -60,19 +73,18 @@ export default function MovieDetails() {
                 <Link
                   to={`/movies/${moviesId.moviesId}/cast`}
                   state={{
-                    from: backToPrevLinkRef.current
+                    from: backToPrevLinkRef.current,
                   }}
                 >
                   Cast
                 </Link>
-                
               </li>
 
               <li>
                 <Link
                   to={`/movies/${moviesId.moviesId}/reviews `}
                   state={{
-                    from: backToPrevLinkRef.current
+                    from: backToPrevLinkRef.current,
                   }}
                 >
                   Reviews
