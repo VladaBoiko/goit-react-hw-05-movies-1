@@ -21,12 +21,8 @@ export default function MovieDetails() {
   const location = useLocation();
   const navigate = useNavigate();
   const backToPrevLinkRef = useRef(location.state?.from ?? "/movies");
-  // console.log(moviesId);
+  // console.log(movies);
   useEffect(() => {
-    if (!moviesId) {
-      console.log("there is no", moviesId);
-      return;
-    }
     console.log(moviesId);
     API.fetchMoviesDetails(moviesId).then((response) => setMovies(response));
   }, [moviesId]);
@@ -95,8 +91,8 @@ export default function MovieDetails() {
                 </Link>
               </li>
             </ul>
-            <Outlet />
           </div>
+          <Outlet />
         </>
       )}
     </>
